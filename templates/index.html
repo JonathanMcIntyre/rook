@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <title>ROOK</title>
+  {% load static %}
+  <link rel='shortcut icon' type='image/jpg' href="{% static 'img/Rook.jpg' %}" />
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+<div class="main-title">
+  <h1>ROOK</h1>
+</div>
+<select id="playerNum">
+  <option value="1">Player 1</option>
+  <option value="2">Player 2</option>
+  <option value="3">Player 3</option>
+  <option value="4">Player 4</option>
+</select>
+<br>
+<input type="username" name="username" placeholder="username">
+<br>
+<input type="password" name="password" placeholder="Password">
+<br>
+<button type="submit" class="button" onclick="enterGame()">Login</button>
+

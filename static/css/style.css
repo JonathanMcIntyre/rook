@@ -1,0 +1,32 @@
+#bidSection {
+    height: 5vh;
+}
+
+#played {
+    height: 30vh;
+}
+
+#hand {
+    height: 50vh;
+}
+
+.playedCardContainer {
+    width: 20%;
+    float: left;
+}
+
+.cardRow {
+    width: 100%;
+    height: 20%;
+    float: left;
+}
+
+.playedCard {
+    height: 20vh;
+    width: 14vw;
+}
+
+.handCard {
+    height: 10vh;
+    width: 10vw;
+}

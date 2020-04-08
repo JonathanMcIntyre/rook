@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <title>ROOK</title>
+  {% load static %}
+  <link rel='shortcut icon' type='image/jpg' href="{% static 'img/Rook.jpg' %}" />
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+<button type="submit" class="button" onclick="resetGame()">RESET GAME</button> 
+<div class="main-title">
+  <h1 id="playerNumber">ROOK - Player </h1>
+  <h2>Points: <label id="points"></label></h2>
+  <h2>Action: <label id="action"></label></h2>
+</div>
+<div id="bidSection">
+  <label for="bidAmount">Bid (at least 5 more than the current highest bid):</label>
+  <input type="number" id="bidAmount" name="bidAmount" min="80" max="300" step="5">
+  <button type="submit" class="button" onclick="bid()">BID</button> 
+  <button type="submit" class="button" onclick="passBid()">PASS</button> 
+  <label>Highest bidder: </label> <label id="highestBidder"></label>
+  <br>
+</div>
+<div>
+  <label>Trump:</label>
+  <select id="trumpSelect">
+    <option value="Select">Select</option>
+    <option value="black">Black</option>
+    <option value="green">Green</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+  </select>
+  <button type="submit" class="button" onclick="chooseTrump()">Enter</button> 
+  <br><br>
+</div>
+<div id="played">
+  <div class="playedCardContainer">
+    <label>Player 1</label> <br>
+    <button id="player1Card" class="playedCard"></button>
+  </div>
+  <div class="playedCardContainer">
+    <label>Player 2</label> <br>
+    <button id="player2Card" class="playedCard"></button>
+  </div>
+  <div class="playedCardContainer">
+    <label>Player 3</label> <br>
+    <button id="player3Card" class="playedCard"></button>
+  </div>
+  <div class="playedCardContainer">
+    <label>Player 4</label> <br>
+    <button id="player4Card" class="playedCard"></button>
+  </div>
+</div>
+<div id="hand">
+  Hand:
+  <div class="cardRow" id="blackCards">
+
+  </div>
+  <div class="cardRow" id="greenCards">
+
+  </div>
+  <div class="cardRow" id="redCards">
+
+  </div>
+  <div class="cardRow" id="yellowCards">
+
+  </div>
+  <div class="cardRow" id="rookCards">
+
+  </div>
+</div>
+<br> <br> <br>
+<label>Kitty:</label>
+<div class="cardRow" id="kitty">
+
+</div>
+
+<script>
+  $(function() {
+      startGame();
+  });
+</script>
