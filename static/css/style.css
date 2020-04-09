@@ -1,18 +1,60 @@
+body {
+    font-size: 20px;
+}
+
+button {
+    border: none;
+    border-radius: 1em;
+    font-size: 20px;
+}
+
+#resetButton {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 5px;
+    min-width: 200px;
+}
+
+#main-title {
+    top: 0;
+    font-size: 30px;
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
 #bidSection {
-    height: 5vh;
+    padding-bottom: 15px;
+}
+
+#bidAmount {
+    font-size: 20px;
+}
+
+#trumpSelect {
+    font-size: 20px;
 }
 
 #played {
-    height: 30vh;
+    height: 20vh;
 }
 
 #hand {
-    height: 50vh;
+    height: 40vh;
+}
+
+.enterButton {
+    min-width: 100px;
+    padding: 4px;
+    border: 1px solid black;
 }
 
 .playedCardContainer {
-    width: 20%;
     float: left;
+}
+
+.playerLabel {
+    padding: 30px;
 }
 
 .cardRow {
@@ -22,11 +64,38 @@
 }
 
 .playedCard {
-    height: 20vh;
+    height: 10vh;
     width: 14vw;
+    margin: 5px;
 }
 
 .handCard {
-    height: 10vh;
-    width: 10vw;
+    height: 6vh;
+    width: 9vw;
+    margin: 5px;
+    border-width: 10px;
+}
+
+.black {
+    border: black solid;
+}
+
+.green {
+    border: green solid;
+    background-color: lightgreen;
+}
+
+.red {
+    border: red solid;
+    background-color: #ffcccb;
+}
+
+.yellow {
+    border: #CCCC00 solid;
+    background-color: lightyellow;
+}
+
+.rook {
+    border: blue solid;
+    background-color: lightblue;
 }

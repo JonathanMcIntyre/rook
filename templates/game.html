@@ -12,18 +12,19 @@
   <script src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
-<button type="submit" class="button" onclick="resetGame()">RESET GAME</button> 
-<div class="main-title">
-  <h1 id="playerNumber">ROOK - Player </h1>
-  <h2>Points: <label id="points"></label></h2>
-  <h2>Action: <label id="action"></label></h2>
+<button type="submit" id="resetButton" class="button enterButton" onclick="resetGame()">RESET GAME</button>
+<div id="main-title">
+    Player <label id="playerNumber"></label> &nbsp&nbsp&nbsp&nbsp
+    Points: <label id="points"></label> &nbsp&nbsp&nbsp&nbsp
+    Action: <label id="action"></label> 
 </div>
 <div id="bidSection">
-  <label for="bidAmount">Bid (at least 5 more than the current highest bid):</label>
+  <label for="bidAmount">Bid:</label>
   <input type="number" id="bidAmount" name="bidAmount" min="80" max="300" step="5">
-  <button type="submit" class="button" onclick="bid()">BID</button> 
-  <button type="submit" class="button" onclick="passBid()">PASS</button> 
-  <label>Highest bidder: </label> <label id="highestBidder"></label>
+  <button type="submit" class="button enterButton" onclick="bid()">BID</button> 
+  <button type="submit" class="button enterButton" onclick="passBid()">PASS</button> 
+  <label>Highest bidder: </label> <label id="highestBidder"></label>&nbsp&nbsp
+  <label>Highest bid: </label><label id="highestBid"></label>
   <br>
 </div>
 <div>
@@ -35,24 +36,24 @@
     <option value="red">Red</option>
     <option value="yellow">Yellow</option>
   </select>
-  <button type="submit" class="button" onclick="chooseTrump()">Enter</button> 
+  <button type="submit" class="button enterButton" onclick="chooseTrump()">Enter</button> 
   <br><br>
 </div>
 <div id="played">
   <div class="playedCardContainer">
-    <label>Player 1</label> <br>
+    <label class="playerLabel">Player 1</label> <br>
     <button id="player1Card" class="playedCard"></button>
   </div>
   <div class="playedCardContainer">
-    <label>Player 2</label> <br>
+    <label class="playerLabel">Player 2</label> <br>
     <button id="player2Card" class="playedCard"></button>
   </div>
   <div class="playedCardContainer">
-    <label>Player 3</label> <br>
+    <label class="playerLabel">Player 3</label> <br>
     <button id="player3Card" class="playedCard"></button>
   </div>
   <div class="playedCardContainer">
-    <label>Player 4</label> <br>
+    <label class="playerLabel">Player 4</label> <br>
     <button id="player4Card" class="playedCard"></button>
   </div>
 </div>
@@ -74,7 +75,6 @@
 
   </div>
 </div>
-<br> <br> <br>
 <label>Kitty:</label>
 <div class="cardRow" id="kitty">
 

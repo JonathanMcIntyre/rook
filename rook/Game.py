@@ -71,6 +71,8 @@ class Game:
 
         for i in range(self.NUM_OF_CARDS_IN_KITTY):
             self.kitty.append(deck.pop())
+        
+        self.kitty = sorted(self.kitty, key = lambda i: (i["color"], i["rank"])) 
 
         while len(deck):
             for player in self.players:
@@ -118,6 +120,7 @@ class Game:
     
     def giveKitty(self, i_player):
         self.players[i_player]["cards"].extend(self.kitty)
+        self.players[i_player]["cards"] = sorted(self.players[i_player]["cards"], key = lambda i: (i["color"], i["rank"])) 
     
     def removeCardFromHand(self, i_player, discard):
         for i in range(len(self.players[i_player]["cards"])):

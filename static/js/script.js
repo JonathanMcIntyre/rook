@@ -49,7 +49,7 @@ function enterGame() {
 
 function startGame() {
     playerNum = parseInt(location.href[location.href.length - 1]) - 1;
-    $("#playerNumber").text("ROOK - Player " + String(playerNum + 1));
+    $("#playerNumber").text(String(playerNum + 1));
     updateState();
 }
 
@@ -63,23 +63,30 @@ function updateState() {
         $("#rookCards").empty();
         $("#kitty").empty();
         for (const card of data["hand"]) {
+            let numStr = String(card.number);
+            if (card.number == 0) {
+                numStr = "Rook"
+            }
             $("#" + card.color + "Cards").append(
                 "<button id=" +
                 card.color + String(card.number) +
-                " class='handCard'>" +
-                card.color + " " + String(card.number) +"</button>");
+                " class='handCard " + card.color + "'>" +
+                numStr +"</button>");
 
             $("#" + card.color + String(card.number)).on('click', function(e) {
                 playCard(card);
             });
         }
         for (const card of data["kitty"]) {
+            let numStr = String(card.number);
+            if (card.number == 0) {
+                numStr = "Rook"
+            }
             $("#kitty").append("<button id=" +
                 card.color + String(card.number) +
-                " class='handCard'>" +
-                card.color + " " + String(card.number) +"</button>");
+                " class='handCard " + card.color + "'>" +
+                numStr +"</button>");
         }
-        $("#bidAmount").val(data.bidAmount);
         $("#trumpSelect").val(data.trump);
         for (let i = 0; i < data.playedCards.length; i++) {
             if (data.playedCards[i]) {
@@ -90,6 +97,7 @@ function updateState() {
         }
         $("#action").text(data.action);
         $("#highestBidder").text("Player " + String(data.highestBidder+1));
+        $("#highestBid").text(String(data.bidAmount));
         $("#points").text(data.points);
         if (data.action === "wait") {
             setTimeout(function () {
@@ -102,33 +110,35 @@ function updateState() {
 
 
 function bid() {
-    let bidAmount = $("#bidAmount").val();
-    postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+    if ($("#action").text() === "bid") {
+        let bidAmount = $("#bidAmount").val();
+        if (bidAmount <= 300 && bidAmount > parseInt($("#highestBid").text())) {
+            postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+        }
+    }
 }
 
 function passBid() {
-    let bidAmount = 0;
-    postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+    if ($("#action").text() === "bid") {
+        let bidAmount = 0;
+        postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+    }
 }
 
 function chooseTrump() {
     if ($("#action").text() === "choose trump" && $("#trumpSelect").val() !== "Select") {
-        var success = function(data) {};
         postData("/select_trump/", {color: $("#trumpSelect").val()}, runUpdateFunction, func, func);
     }
 }
 
 function playCard(card) {
     if ($("#action").text() === "discard") {
-        var success = function(data) {};
         postData("/discard/", {i_player: playerNum, card: card}, runUpdateFunction, func, func);
     } else if ($("#action").text() === "play card") {
-        var success = function(data) {};
         postData("/play_card/", {i_player: playerNum, card: card}, runUpdateFunction, func, func);
     }
 }
 
 function resetGame() {
-    var success = function(data) {};
     postData("/reset/", {i_player: playerNum}, runUpdateFunction, func, func);
 }
