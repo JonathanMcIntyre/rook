@@ -8,6 +8,7 @@ class Game:
         self.teams = []
         self.createPlayers()
         self.createDeck()
+        self.i_bidTurn = 0
         
     def resetDeck(self):
         self.bidAmount = 80
@@ -21,7 +22,7 @@ class Game:
         self.colorLed = None
         for player in self.players:
             player["tricks"] = []
-            player["bid"]: 80
+            player["bid"] = 80
 
     def createPlayers(self):
         self.i_playerTurn = 0
@@ -213,6 +214,11 @@ class Game:
             self.players[1]["points"] -= self.bidAmount
             self.players[3]["points"] -= self.bidAmount
         
+        self.i_bidTurn += 1
+        if self.i_bidTurn == self.NUMBER_OF_PLAYERS:
+            self.i_bidTurn = 0
+        self.i_playerTurn = self.i_bidTurn
+
         self.createDeck()
 
 
