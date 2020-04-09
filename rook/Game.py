@@ -21,6 +21,7 @@ class Game:
         self.colorLed = None
         for player in self.players:
             player["tricks"] = []
+            player["bid"]: 80
 
     def createPlayers(self):
         self.i_playerTurn = 0
@@ -174,6 +175,8 @@ class Game:
             self.nextTurn()
 
     def endRound(self):
+        MOST_TRICKS_BONUS = 20
+        ALL_TRICKS_BONUS = 100
         team1Points = 0
         team2Points = 0
         for player in [self.players[0], self.players[2]]:
@@ -186,6 +189,16 @@ class Game:
                 for card in trick:
                     team2Points += card["points"]
         
+        if len(self.players[0]["tricks"]) + len(self.players[2]["tricks"]) > len(self.players[1]["tricks"]) + len(self.players[3]["tricks"]):
+            team1Points += MOST_TRICKS_BONUS
+        elif len(self.players[0]["tricks"]) + len(self.players[2]["tricks"]) < len(self.players[1]["tricks"]) + len(self.players[3]["tricks"]):
+            team2Points += MOST_TRICKS_BONUS
+        
+        if len(self.players[0]["tricks"]) + len(self.players[2]["tricks"]) == 0:
+            team2Points += ALL_TRICKS_BONUS
+        elif len(self.players[1]["tricks"]) + len(self.players[3]["tricks"]) == 0:
+            team1Points += ALL_TRICKS_BONUS
+
         self.players[0]["points"] += team1Points
         self.players[1]["points"] += team2Points
         self.players[2]["points"] += team1Points
