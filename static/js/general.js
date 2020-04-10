@@ -1,14 +1,29 @@
+var emptyFunc = function(data) {};
+var alertFunc = function(data) {console.log(data)};
+
 function enterGame() {
     let i_player = $("#playerNum").val() - 1;
+    let code = $("#gameKey").val();
     var success = function(data) {
         if (data["isEntered"]) {
-            window.location.href = '/game?Player=' + String(i_player + 1);
+            window.location.href = '/game?Code=' + code + '&Player=' + String(i_player + 1);
         } else {
-            console.log("This player is already entered")
+            console.log("Incorrect game code")
         }
     }
-    var func = function(data) {};
-    postData("/enter_game/", {i_player: i_player}, success, func, func);
+    postData("/enter_game/", {i_player: i_player, code: code}, success, emptyFunc, emptyFunc);
+}
+
+function createGame() {
+    let code = $("#gameKey").val();
+    let password = $("#gameMasterPassword").val();
+    postData("/create_game/", {code: code, password: password}, alertFunc, emptyFunc, emptyFunc);
+}
+
+function deleteGame() {
+    let code = $("#gameKey").val();
+    let password = $("#gameMasterPassword").val();
+    postData("/delete_game/", {code: code, password: password}, alertFunc, emptyFunc, emptyFunc);
 }
 
 function getCookie(name) {

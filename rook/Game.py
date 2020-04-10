@@ -251,6 +251,10 @@ class Game:
             self.showResults[i_player] = False
             tricks = self.tricks
         
+        i_opponentPlayer = i_player + 1
+        if i_opponentPlayer == self.NUMBER_OF_PLAYERS:
+            i_opponentPlayer = 0
+
         return {
             "bidAmount": self.bidAmount,
             "highestBidder": self.highestBidder,
@@ -262,5 +266,6 @@ class Game:
             "cardsToDiscard": cardsToDiscard,
             "kitty": kitty,
             "points": self.players[i_player]["points"],
+            "pointsOpponent": self.players[i_opponentPlayer]["points"],
             "tricks": tricks
         }

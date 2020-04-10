@@ -21,11 +21,16 @@
       <option value="4">Player 4</option>
     </select>
     <br>
-    <input  class="center" type="username" name="username" placeholder="username">
+    <input id="gameKey" class="center" placeholder="Game Key">
     <br>
-    <input  class="center" type="password" name="password" placeholder="Password">
+    <button class="center" type="submit" class="button" onclick="enterGame()">Enter Game</button>
     <br>
-    <button class="center" type="submit" class="button" onclick="enterGame()">Login</button>
+    <br>
+    <input id="gameMasterPassword" class="center" type="password" placeholder="Game Master Password">
+    <br>
+    <button class="center" type="submit" class="button" onclick="createGame()">Create Game</button>
+    <br>
+    <button class="center" type="submit" class="button" onclick="deleteGame()">Delete Game</button>
 </div>
 </body>
 

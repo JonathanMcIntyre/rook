@@ -28,4 +28,6 @@ urlpatterns = [
     path('play_card/', views.play_card, name='play_card'),
     path('reset/', views.reset, name='reset'),
     path('state/', views.state, name='state'),
+    path('create_game/', views.create_game, name='create_game'),
+    path('delete_game/', views.delete_game, name='delete_game'),
 ]

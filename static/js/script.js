@@ -1,9 +1,23 @@
 var playerNum;
+var gameCode;
 var runUpdateFunction = function(data) {updateState();};
 var func = function(data) {};
 
+function findGetParameter(parameterName) {
+    var result = null, tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) {
+            result = decodeURIComponent(tmp[1]);
+        }
+    }
+    return result;
+}
+
 function startGame() {
-    playerNum = parseInt(location.href[location.href.length - 1]) - 1;
+    gameCode = findGetParameter("Code");
+    playerNum = parseInt(findGetParameter("Player")) - 1;
     $("#playerNumber").text(String(playerNum + 1));
     updateState();
 }
@@ -65,6 +79,7 @@ function updateState() {
         $("#highestBidder").text(highestBidder);
         $("#highestBid").text(String(data.bidAmount));
         $("#points").text(data.points);
+        $("#pointsOpponent").text(data.pointsOpponent);
         
         if (data.tricks) {
             displayRoundEnd(data.tricks);
@@ -76,7 +91,7 @@ function updateState() {
             }
         }
     }
-    postData("/state/", {i_player: playerNum}, success, func, func);
+    postData("/state/", {code: gameCode, i_player: playerNum}, success, func, func);
 }
 
 
@@ -84,7 +99,7 @@ function bid() {
     if ($("#action").text() === "bid") {
         let bidAmount = $("#bidAmount").val();
         if (bidAmount <= 300 && bidAmount > parseInt($("#highestBid").text())) {
-            postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+            postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
         }
     }
 }
@@ -92,26 +107,26 @@ function bid() {
 function passBid() {
     if ($("#action").text() === "bid") {
         let bidAmount = 0;
-        postData("/bid/", {i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
+        postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
     }
 }
 
 function chooseTrump() {
     if ($("#action").text() === "choose trump" && $("#trumpSelect").val() !== "Select") {
-        postData("/select_trump/", {color: $("#trumpSelect").val()}, runUpdateFunction, func, func);
+        postData("/select_trump/", {code: gameCode, color: $("#trumpSelect").val()}, runUpdateFunction, func, func);
     }
 }
 
 function playCard(card) {
     if ($("#action").text() === "discard") {
-        postData("/discard/", {i_player: playerNum, card: card}, runUpdateFunction, func, func);
+        postData("/discard/", {code: gameCode, i_player: playerNum, card: card}, runUpdateFunction, func, func);
     } else if ($("#action").text() === "play card") {
-        postData("/play_card/", {i_player: playerNum, card: card}, runUpdateFunction, func, func);
+        postData("/play_card/", {code: gameCode, i_player: playerNum, card: card}, runUpdateFunction, func, func);
     }
 }
 
 function resetGame() {
-    postData("/reset/", {i_player: playerNum}, runUpdateFunction, func, func);
+    postData("/reset/", {code: gameCode, i_player: playerNum}, runUpdateFunction, func, func);
 }
 
 function displayRoundEnd(tricks) {
