@@ -213,16 +213,19 @@ class Game:
         elif len(self.players[1]["tricks"]) + len(self.players[3]["tricks"]) == 0:
             team1Points += ALL_TRICKS_BONUS
 
-        self.players[0]["points"] += team1Points
-        self.players[1]["points"] += team2Points
-        self.players[2]["points"] += team1Points
-        self.players[3]["points"] += team2Points
         if team1Points < self.bidAmount and (self.highestBidder == 0 or self.highestBidder == 2):
             self.players[0]["points"] -= self.bidAmount
             self.players[2]["points"] -= self.bidAmount
-        elif team2Points < self.bidAmount and (self.highestBidder == 1 or self.highestBidder == 3):
+        else:
+            self.players[0]["points"] += team1Points
+            self.players[2]["points"] += team1Points
+
+        if team2Points < self.bidAmount and (self.highestBidder == 1 or self.highestBidder == 3):
             self.players[1]["points"] -= self.bidAmount
             self.players[3]["points"] -= self.bidAmount
+        else:
+            self.players[1]["points"] += team2Points
+            self.players[3]["points"] += team2Points
         
         self.i_bidTurn += 1
         if self.i_bidTurn == self.NUMBER_OF_PLAYERS:
