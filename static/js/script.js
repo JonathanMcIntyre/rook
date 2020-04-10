@@ -2,51 +2,6 @@ var playerNum;
 var runUpdateFunction = function(data) {updateState();};
 var func = function(data) {};
 
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
-function postData(url, data, success, error, complete, async=true) {
-    var csrftoken = getCookie('csrftoken');
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
-    $.ajax({async: async, type: "POST", url: url, data: data, success: success, error: error, complete: complete});
-}
-
-function enterGame() {
-    let i_player = $("#playerNum").val() - 1;
-    var success = function(data) {
-        if (data["isEntered"]) {
-            window.location.href = '/game?Player=' + String(i_player + 1);
-        } else {
-            console.log("This player is already entered")
-        }
-    }
-    postData("/enter_game/", {i_player: i_player}, success, func, func);
-}
-
 function startGame() {
     playerNum = parseInt(location.href[location.href.length - 1]) - 1;
     $("#playerNumber").text(String(playerNum + 1));
@@ -89,20 +44,36 @@ function updateState() {
         }
         $("#trumpSelect").val(data.trump);
         for (let i = 0; i < data.playedCards.length; i++) {
+            $("#" + "player" + String(i+1) + "Card").removeClass();
+            $("#" + "player" + String(i+1) + "Card").addClass("playedCard")
             if (data.playedCards[i]) {
-                $("#" + "player" + String(i+1) + "Card").text(data.playedCards[i].color + " " + data.playedCards[i].number);
+                let numStr = String(data.playedCards[i].number);
+                if (data.playedCards[i].number == 0) {
+                    numStr = "Rook"
+                }
+                $("#" + "player" + String(i+1) + "Card").text(numStr);
+                $("#" + "player" + String(i+1) + "Card").addClass(data.playedCards[i].color)
             } else {
                 $("#" + "player" + String(i+1) + "Card").text("");
             }
         }
         $("#action").text(data.action);
-        $("#highestBidder").text("Player " + String(data.highestBidder+1));
+        let highestBidder = "None";
+        if (data.highestBidder != null) {
+            highestBidder = "Player " + String(data.highestBidder+1);
+        }
+        $("#highestBidder").text(highestBidder);
         $("#highestBid").text(String(data.bidAmount));
         $("#points").text(data.points);
-        if (data.action === "wait") {
-            setTimeout(function () {
-                updateState();
-            }, 1000);
+        
+        if (data.tricks) {
+            displayRoundEnd(data.tricks);
+        } else {
+            if (data.action === "wait") {
+                setTimeout(function () {
+                    updateState();
+                }, 1000);
+            }
         }
     }
     postData("/state/", {i_player: playerNum}, success, func, func);
@@ -141,4 +112,25 @@ function playCard(card) {
 
 function resetGame() {
     postData("/reset/", {i_player: playerNum}, runUpdateFunction, func, func);
+}
+
+function displayRoundEnd(tricks) {
+    $("#results1").empty();
+    $("#results2").empty();
+    $("#results3").empty();
+    $("#results4").empty();
+    $("#roundResults").show();
+    for (let i = 0; i < tricks.length; i++) {
+        for (let j = 0; j < tricks[i].length; j++) {
+            let card = tricks[i][j];
+            let numStr = String(card.number);
+            if (card.number == 0) {
+                numStr = "Rook"
+            }
+            $("#results" + String(j+1)).append("<button id=" +
+                card.color + String(card.number) +
+                " class='handCard " + card.color + "'>" +
+                numStr +"</button><br>");
+        }
+    }
 }

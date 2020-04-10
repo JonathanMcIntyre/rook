@@ -9,6 +9,7 @@
   <link rel='shortcut icon' type='image/jpg' href="{% static 'img/Rook.jpg' %}" />
   <link href="{% static 'css/style.css' %}" rel="stylesheet" />
   <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/general.js' %}"></script>
   <script src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
@@ -59,25 +60,35 @@
 </div>
 <div id="hand">
   Hand:
-  <div class="cardRow" id="blackCards">
-
-  </div>
-  <div class="cardRow" id="greenCards">
-
-  </div>
-  <div class="cardRow" id="redCards">
-
-  </div>
-  <div class="cardRow" id="yellowCards">
-
-  </div>
-  <div class="cardRow" id="rookCards">
-
-  </div>
+  <div class="cardRow" id="blackCards"></div>
+  <div class="cardRow" id="greenCards"></div>
+  <div class="cardRow" id="redCards"></div>
+  <div class="cardRow" id="yellowCards"></div>
+  <div class="cardRow" id="rookCards"></div>
 </div>
 <label>Kitty:</label>
-<div class="cardRow" id="kitty">
+<div class="cardRow" id="kitty"></div>
 
+<div id="roundResults">
+  <button type="submit" id="closeRoundResultsButton" class="button enterButton" onclick="this.parentElement.style.display='none'; updateState();">Close</button>
+  <div id="cardResults">
+    <div class="cardResultsContainer">
+      <label class="playerLabel">Player 1</label> <br>
+      <div id="results1"></div>
+    </div>
+    <div class="cardResultsContainer">
+      <label class="playerLabel">Player 2</label> <br>
+      <div id="results2"></div>
+    </div>
+    <div class="cardResultsContainer">
+      <label class="playerLabel">Player 3</label> <br>
+      <div id="results3"></div>
+    </div>
+    <div class="cardResultsContainer">
+      <label class="playerLabel">Player 4</label> <br>
+      <div id="results4"></div>
+    </div>
+  </div>
 </div>
 
 <script>

@@ -9,13 +9,14 @@ class Game:
         self.createPlayers()
         self.createDeck()
         self.i_bidTurn = 0
+        self.tricks = []
+        self.showResults = [False, False, False, False]
         
     def resetDeck(self):
         self.bidAmount = 80
         self.highestBidder = None
         self.trump = "Select"
         self.kitty = []
-        self.tricks = []
         self.trick = [None, None, None, None]
         self.state = "bid"
         self.trickWinner = None
@@ -91,8 +92,10 @@ class Game:
             self.players[i_player]["bid"] = 0
         
         if self.isBiddingDone():
+            self.tricks = []
             for i in range(self.NUMBER_OF_PLAYERS):
                 if self.players[i]["bid"]:
+                    self.highestBidder = i
                     self.i_playerTurn = i
                     self.giveKitty(i)
                     self.state = "discard"
@@ -140,6 +143,13 @@ class Game:
 
     def setTrump(self, color):
         self.trump = color.lower()
+        for player in self.players:
+            for card in player["cards"]:
+                if card["color"] == "rook":
+                    card["color"] = self.trump
+                    player["cards"] = sorted(player["cards"], key = lambda i: (i["color"], i["rank"]))
+                    break 
+
         self.nextTurn()
         self.state = "play card"
 
@@ -219,6 +229,8 @@ class Game:
             self.i_bidTurn = 0
         self.i_playerTurn = self.i_bidTurn
 
+        self.showResults = [True, True, True, True]
+
         self.createDeck()
 
 
@@ -234,6 +246,11 @@ class Game:
         if self.state == "discard":
             kitty = self.kitty
         
+        tricks = None
+        if self.showResults[i_player]:
+            self.showResults[i_player] = False
+            tricks = self.tricks
+        
         return {
             "bidAmount": self.bidAmount,
             "highestBidder": self.highestBidder,
@@ -245,4 +262,5 @@ class Game:
             "cardsToDiscard": cardsToDiscard,
             "kitty": kitty,
             "points": self.players[i_player]["points"],
+            "tricks": tricks
         }

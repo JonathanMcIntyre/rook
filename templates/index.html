@@ -7,24 +7,27 @@
   <title>ROOK</title>
   {% load static %}
   <link rel='shortcut icon' type='image/jpg' href="{% static 'img/Rook.jpg' %}" />
-  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/login.css' %}" rel="stylesheet" />
   <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/general.js' %}"></script>
 </head>
 <body>
-<div class="main-title">
-  <h1>ROOK</h1>
+<div id="main-content">
+    <div class="main-title center">ROOK</div> <br>
+    <select id="playerNum" class="center">
+      <option value="1">Player 1</option>
+      <option value="2">Player 2</option>
+      <option value="3">Player 3</option>
+      <option value="4">Player 4</option>
+    </select>
+    <br>
+    <input  class="center" type="username" name="username" placeholder="username">
+    <br>
+    <input  class="center" type="password" name="password" placeholder="Password">
+    <br>
+    <button class="center" type="submit" class="button" onclick="enterGame()">Login</button>
 </div>
-<select id="playerNum">
-  <option value="1">Player 1</option>
-  <option value="2">Player 2</option>
-  <option value="3">Player 3</option>
-  <option value="4">Player 4</option>
-</select>
-<br>
-<input type="username" name="username" placeholder="username">
-<br>
-<input type="password" name="password" placeholder="Password">
-<br>
-<button type="submit" class="button" onclick="enterGame()">Login</button>
+</body>
+
+
 

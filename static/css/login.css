@@ -1,0 +1,18 @@
+#main-content {
+    width: 80%;
+    margin: auto;
+}
+
+.main-title {
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.center {
+    font-size: 30px;
+    margin: auto;
+    display: block;
+    padding: 5px;
+    min-width: 50%;
+}

@@ -67,6 +67,7 @@ button {
     height: 10vh;
     width: 14vw;
     margin: 5px;
+    background-color: #f0f0f0;
 }
 
 .handCard {
@@ -78,6 +79,7 @@ button {
 
 .black {
     border: black solid;
+    background-color: #f0f0f0;
 }
 
 .green {
@@ -98,4 +100,26 @@ button {
 .rook {
     border: blue solid;
     background-color: lightblue;
+}
+
+#roundResults {
+    display: none;
+    z-index: 2;
+    margin: auto;
+    border: 1px solid grey;
+    background-color: #f5f5f5;
+    position: fixed;
+    bottom: 10px;
+    top: 50px;
+    left: 10px;
+    right: 10px;
+    overflow: auto;
+}
+
+#closeRoundResultsButton {
+    float: right;
+}
+
+.cardResultsContainer {
+    float: left;
 }
