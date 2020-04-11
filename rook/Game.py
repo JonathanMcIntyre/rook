@@ -13,7 +13,7 @@ class Game:
         self.showResults = [False, False, False, False]
         
     def resetDeck(self):
-        self.bidAmount = 80
+        self.bidAmount = 70
         self.highestBidder = None
         self.trump = "Select"
         self.kitty = []
@@ -23,7 +23,7 @@ class Game:
         self.colorLed = None
         for player in self.players:
             player["tricks"] = []
-            player["bid"] = 80
+            player["bid"] = 70
 
     def createPlayers(self):
         self.i_playerTurn = 0
@@ -33,7 +33,7 @@ class Game:
                 "number": i+1,
                 "name": "Player " + str(i+1),
                 "cards": [],
-                "bid": 80,
+                "bid": 70,
                 "points": 0,
                 "tricks": [],
             })

@@ -80,6 +80,25 @@ function updateState() {
         $("#highestBid").text(String(data.bidAmount));
         $("#points").text(data.points);
         $("#pointsOpponent").text(data.pointsOpponent);
+
+        $("#bidAmount").empty();
+        if (data.action === "bid") {
+            let bidList = [];
+            let bidToAdd = data.bidAmount + 5;
+            while (bidToAdd <= 300) {
+                bidList.push(bidToAdd);
+                bidToAdd += 5;
+                if (bidToAdd == 180) {
+                    bidToAdd = 300;
+                }
+            }
+            for (let i = 0; i < bidList.length; i++) {
+                let bidAmountStr = String(bidList[i]);
+                let o = new Option(bidAmountStr, bidAmountStr);
+                $(o).html(bidAmountStr);
+                $("#bidAmount").append(o);
+            }
+        }
         
         if (data.tricks) {
             displayRoundEnd(data.tricks);
@@ -98,9 +117,7 @@ function updateState() {
 function bid() {
     if ($("#action").text() === "bid") {
         let bidAmount = $("#bidAmount").val();
-        if (bidAmount <= 300 && bidAmount > parseInt($("#highestBid").text())) {
-            postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
-        }
+        postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
     }
 }
 
