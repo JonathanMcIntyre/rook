@@ -18,9 +18,10 @@ var alertFunc = function(data) {
 function enterGame() {
     let i_player = $("#playerNum").val() - 1;
     let code = $("#gameKey").val();
+    let name = $("#playerName").val();
     var success = function(data) {
         if (data["isEntered"]) {
-            window.location.href = '/game?Code=' + code + '&Player=' + String(i_player + 1);
+            window.location.href = '/game?Code=' + code + '&Player=' + String(i_player + 1) + '&Name=' + name;
         } else {
             console.log("Incorrect game code")
         }

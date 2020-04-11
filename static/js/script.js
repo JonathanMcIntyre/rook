@@ -1,5 +1,6 @@
 var playerNum;
 var gameCode;
+var playerName;
 var runUpdateFunction = function(data) {updateState();};
 var func = function(data) {};
 
@@ -19,12 +20,34 @@ function startGame() {
     gameCode = findGetParameter("Code");
     playerNum = parseInt(findGetParameter("Player")) - 1;
     $("#playerNumber").text(String(playerNum + 1));
-    updateState();
+    playerName = findGetParameter("Name");
+    postData("/player_name/", {code: gameCode, i_player: playerNum, name: playerName}, runUpdateFunction, func, func);
+}
+
+function updateStateWithAction() {
+    var success = function(data) {
+        for (let i = 0; i < 4; i++) {
+            $("#playerName" + String(i+1)).text(data.names[i]);
+        }
+        if (data.names[playerNum] === "Waiting...") {
+            postData("/player_name/", {code: gameCode, i_player: playerNum, name: playerName}, runUpdateFunction, func, func);
+        }
+        else if (data.action !== "wait") {
+            setTimeout(function () {
+                updateStateWithAction();
+            }, 1000);
+        }
+    }
+    postData("/active_check/", {code: gameCode, i_player: playerNum}, success, func, func);
 }
 
 function updateState() {
     var success = function(data) {
         console.log(data);
+        if (data.names[playerNum] === "Waiting...") {
+            postData("/player_name/", {code: gameCode, i_player: playerNum, name: playerName}, runUpdateFunction, func, func);
+            return;
+        }
         $("#blackCards").empty();
         $("#greenCards").empty();
         $("#redCards").empty();
@@ -62,10 +85,12 @@ function updateState() {
         } else {
             $("#trumpSelect").prop('disabled', 'disabled');
         }
+        let isCardPlayed = false;
         for (let i = 0; i < data.playedCards.length; i++) {
             $("#" + "player" + String(i+1) + "Card").removeClass();
             $("#" + "player" + String(i+1) + "Card").addClass("playedCard")
             if (data.playedCards[i]) {
+                isCardPlayed = true;
                 let numStr = String(data.playedCards[i].number);
                 if (data.playedCards[i].number == 0) {
                     numStr = "Rook"
@@ -74,6 +99,21 @@ function updateState() {
                 $("#" + "player" + String(i+1) + "Card").addClass(data.playedCards[i].color)
             } else {
                 $("#" + "player" + String(i+1) + "Card").text("");
+            }
+        }
+        for (let i = 0; i < 4; i++) {
+            $("#playerName" + String(i+1)).text(data.names[i]);
+            if (data.bids[i] == 0 && data.trump === "Select") {
+                $("#playerLabel" + String(i+1)).text(String(i+1) + " - Passed");
+            } else {
+                $("#playerLabel" + String(i+1)).text("Player " + String(i+1));
+            }
+            if (i == data.playerTurn) {
+                $("#playerLabel" + String(i+1)).css('font-weight', 'bold');
+                $("#playerName" + String(i+1)).css('font-weight', 'bold');
+            } else {
+                $("#playerLabel" + String(i+1)).css('font-weight', 'normal');
+                $("#playerName" + String(i+1)).css('font-weight', 'normal');
             }
         }
         $("#action").text(data.action);
@@ -104,14 +144,6 @@ function updateState() {
                 $("#bidAmount").append(o);
             }
         }
-
-        for (let i = 0; i < 4; i++) {
-            if (i == data.playerTurn) {
-                $("#playerLabel" + String(i+1)).css('font-weight', 'bold');
-            } else {
-                $("#playerLabel" + String(i+1)).css('font-weight', 'normal');
-            }
-        }
         
         if (data.tricks) {
             displayRoundEnd(data.tricks, data.roundResults);
@@ -120,6 +152,8 @@ function updateState() {
                 setTimeout(function () {
                     updateState();
                 }, 1000);
+            } else {
+                updateStateWithAction();
             }
         }
     }
@@ -161,7 +195,7 @@ function playCard(card) {
 }
 
 function resetGame() {
-    postData("/reset/", {code: gameCode, i_player: playerNum}, runUpdateFunction, func, func);
+    postData("/reset/", {code: gameCode, i_player: playerNum}, func, func, func);
 }
 
 function displayRoundEnd(tricks, results) {

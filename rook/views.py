@@ -64,6 +64,22 @@ def enter_game(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def player_name(request):
+    gameCode = request.POST["code"]
+    i_player = int(request.POST["i_player"])
+    name = request.POST["name"]
+    games[gameCode].enterName(i_player, name)
+    return JsonResponse({})
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def active_check(request):
+    gameCode = request.POST["code"]
+    i_player = int(request.POST["i_player"])
+    return JsonResponse(games[gameCode].resetNameCheck(i_player))
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def bid(request):
     gameCode = request.POST["code"]
     i_player = int(request.POST["i_player"])

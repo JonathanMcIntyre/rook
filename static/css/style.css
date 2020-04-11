@@ -55,7 +55,9 @@ button {
 }
 
 .playerLabel {
-    padding: 30px;
+    margin: auto;
+    display: block;
+    text-align: center;
 }
 
 .cardRow {

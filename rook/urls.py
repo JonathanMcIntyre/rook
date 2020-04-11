@@ -30,4 +30,6 @@ urlpatterns = [
     path('state/', views.state, name='state'),
     path('create_game/', views.create_game, name='create_game'),
     path('delete_game/', views.delete_game, name='delete_game'),
+    path('player_name/', views.player_name, name='player_name'),
+    path('active_check/', views.active_check, name='active_check'),
 ]

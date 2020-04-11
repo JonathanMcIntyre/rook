@@ -32,7 +32,7 @@ class Game:
         for i in range(self.NUMBER_OF_PLAYERS):
             self.players.append({
                 "number": i+1,
-                "name": "Player " + str(i+1),
+                "name": "Waiting...",
                 "cards": [],
                 "bid": 70,
                 "points": 0,
@@ -84,6 +84,13 @@ class Game:
         for player in self.players:
             player["cards"] = sorted(player["cards"], key = lambda i: (i["color"], i["rank"])) 
     
+    def enterName(self, i_player, name):
+        if len(name) > 12:
+            name = name[:12]
+        elif len(name) == 0:
+            name = "nameless"
+        self.players[i_player]["name"] = name
+
     def bid(self, i_player, bidAmount):
         if bidAmount:
             self.players[i_player]["bid"] = bidAmount
@@ -275,9 +282,16 @@ class Game:
         if i_opponentPlayer == self.NUMBER_OF_PLAYERS:
             i_opponentPlayer = 0
 
+        names = []
+        bids = []
+        for player in self.players:
+            names.append(player["name"])
+            bids.append(player["bid"])
+
         return {
             "bidAmount": self.bidAmount,
             "highestBidder": self.highestBidder,
+            "bids": bids,
             "playerTurn": self.i_playerTurn,
             "trump": self.trump,
             "playedCards": self.trick,
@@ -289,4 +303,17 @@ class Game:
             "pointsOpponent": self.players[i_opponentPlayer]["points"],
             "tricks": tricks,
             "roundResults": roundResults,
+            "names": names,
+        }
+
+    def resetNameCheck(self, i_player):
+        action = "wait"
+        if self.i_playerTurn == i_player:
+            action = self.state
+        names = []
+        for player in self.players:
+            names.append(player["name"])
+        return {
+            "action": action,
+            "names": names
         }
