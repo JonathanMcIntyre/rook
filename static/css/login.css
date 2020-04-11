@@ -16,3 +16,7 @@
     padding: 5px;
     min-width: 50%;
 }
+
+#message {
+    text-align: center;
+}

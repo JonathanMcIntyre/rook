@@ -1,5 +1,19 @@
 var emptyFunc = function(data) {};
-var alertFunc = function(data) {console.log(data)};
+var alertFunc = function(data) {
+    let message = data.Message + ". ";
+    if (data.Games) {
+        message += "Existing Games: ";
+        for (let i = 0; i < data.Games.length; i++) {
+            message += data.Games[i];
+            if (i < data.Games.length - 1) {
+                message += ", ";
+            }
+        }
+        $("#message").text(message);
+    } else {
+        $("#message").text(message);
+    }
+};
 
 function enterGame() {
     let i_player = $("#playerNum").val() - 1;

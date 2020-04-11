@@ -36,7 +36,7 @@ def create_game(request):
         else:
             return JsonResponse({"Message": "Game already exists", "Games": list(games.keys())})
     
-    return JsonResponse({"Success": "Incorrect Password"})
+    return JsonResponse({"Message": "Incorrect Password"})
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -50,7 +50,7 @@ def delete_game(request):
         else:
             return JsonResponse({"Message": "Game does not exist", "Games": list(games.keys())})
     
-    return JsonResponse({"Success": "Incorrect Password"})
+    return JsonResponse({"Message": "Incorrect Password"})
 
 @require_http_methods(["POST"])
 @csrf_exempt
