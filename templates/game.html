@@ -59,8 +59,9 @@
     <button id="player4Card" class="playedCard"></button>
   </div>
 </div>
+<br>
 <div id="hand">
-  Hand:
+  <label>Hand:</label>
   <div class="cardRow" id="blackCards"></div>
   <div class="cardRow" id="greenCards"></div>
   <div class="cardRow" id="redCards"></div>
@@ -72,6 +73,14 @@
 
 <div id="roundResults">
   <button type="submit" id="closeRoundResultsButton" class="button enterButton" onclick="this.parentElement.style.display='none'; updateState();">Close</button>
+  <div id="pointsResults">
+    &nbsp&nbsp<label>Highest Bidder: Player </label><label id="resultsHighestBidder"></label> <br>
+    &nbsp&nbsp<label>Highest Bid: </label><label id="resultsHighestBid"></label> <br>
+    &nbsp&nbsp<label>Players 1 & 3 Tricks: </label><label id="tricksWon13"></label> <br>
+    &nbsp&nbsp<label>Players 2 & 4 Tricks: </label><label id="tricksWon24"></label> <br>
+    &nbsp&nbsp<label>Players 1 & 3 Points: </label><label id="points13"></label> <br>
+    &nbsp&nbsp<label>Players 2 & 4 Points: </label><label id="points24"></label> <br><br>
+  </div>
   <div id="cardResults">
     <div class="cardResultsContainer">
       <label class="playerLabel">Player 1</label> <br>

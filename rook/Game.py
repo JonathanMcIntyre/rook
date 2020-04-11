@@ -11,6 +11,7 @@ class Game:
         self.i_bidTurn = 0
         self.tricks = []
         self.showResults = [False, False, False, False]
+        self.roundResults = None
         
     def resetDeck(self):
         self.bidAmount = 70
@@ -91,8 +92,16 @@ class Game:
         else:
             self.players[i_player]["bid"] = 0
         
+        if bidAmount == 300:
+            self.tricks = []
+            self.i_playerTurn = i_player
+            self.giveKitty(i_player)
+            self.state = "discard"
+            return
+
         if self.isBiddingDone():
             self.tricks = []
+            self.roundResults = None
             for i in range(self.NUMBER_OF_PLAYERS):
                 if self.players[i]["bid"]:
                     self.highestBidder = i
@@ -179,7 +188,10 @@ class Game:
         self.removeCardFromHand(i_player, card)
 
         if (all(playedCard is not None for playedCard in self.trick)):
-            self.tricks.append(self.trick)
+            self.tricks.append({
+                "cards": self.trick,
+                "winner": self.trickWinner,
+            })
             self.players[self.trickWinner]["tricks"].append(self.trick)
             self.i_playerTurn = self.trickWinner
             self.trickWinner = None
@@ -214,18 +226,14 @@ class Game:
             team1Points += ALL_TRICKS_BONUS
 
         if team1Points < self.bidAmount and (self.highestBidder == 0 or self.highestBidder == 2):
-            self.players[0]["points"] -= self.bidAmount
-            self.players[2]["points"] -= self.bidAmount
-        else:
-            self.players[0]["points"] += team1Points
-            self.players[2]["points"] += team1Points
+            team1Points = -self.bidAmount
+        elif team2Points < self.bidAmount and (self.highestBidder == 1 or self.highestBidder == 3):
+            team2Points = -self.bidAmount
 
-        if team2Points < self.bidAmount and (self.highestBidder == 1 or self.highestBidder == 3):
-            self.players[1]["points"] -= self.bidAmount
-            self.players[3]["points"] -= self.bidAmount
-        else:
-            self.players[1]["points"] += team2Points
-            self.players[3]["points"] += team2Points
+        self.players[0]["points"] += team1Points
+        self.players[2]["points"] += team1Points
+        self.players[1]["points"] += team2Points
+        self.players[3]["points"] += team2Points
         
         self.i_bidTurn += 1
         if self.i_bidTurn == self.NUMBER_OF_PLAYERS:
@@ -233,9 +241,16 @@ class Game:
         self.i_playerTurn = self.i_bidTurn
 
         self.showResults = [True, True, True, True]
+        self.roundResults = {
+            "bidAmount": self.bidAmount,
+            "highestBidder": self.highestBidder,
+            "numOfTricks13": len(self.players[0]["tricks"]) + len(self.players[2]["tricks"]),
+            "numOfTricks24": len(self.players[1]["tricks"]) + len(self.players[3]["tricks"]),
+            "points13": team1Points,
+            "points24": team2Points,
+        }
 
         self.createDeck()
-
 
     def getState(self, i_player):
         action = "wait"
@@ -250,9 +265,11 @@ class Game:
             kitty = self.kitty
         
         tricks = None
+        roundResults = None
         if self.showResults[i_player]:
             self.showResults[i_player] = False
             tricks = self.tricks
+            roundResults = self.roundResults
         
         i_opponentPlayer = i_player + 1
         if i_opponentPlayer == self.NUMBER_OF_PLAYERS:
@@ -270,5 +287,6 @@ class Game:
             "kitty": kitty,
             "points": self.players[i_player]["points"],
             "pointsOpponent": self.players[i_opponentPlayer]["points"],
-            "tricks": tricks
+            "tricks": tricks,
+            "roundResults": roundResults,
         }

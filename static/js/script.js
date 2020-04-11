@@ -57,6 +57,11 @@ function updateState() {
                 numStr +"</button>");
         }
         $("#trumpSelect").val(data.trump);
+        if (data.action === "choose trump") {
+            $("#trumpSelect").prop('disabled', false);
+        } else {
+            $("#trumpSelect").prop('disabled', 'disabled');
+        }
         for (let i = 0; i < data.playedCards.length; i++) {
             $("#" + "player" + String(i+1) + "Card").removeClass();
             $("#" + "player" + String(i+1) + "Card").addClass("playedCard")
@@ -109,7 +114,7 @@ function updateState() {
         }
         
         if (data.tricks) {
-            displayRoundEnd(data.tricks);
+            displayRoundEnd(data.tricks, data.roundResults);
         } else {
             if (data.action === "wait") {
                 setTimeout(function () {
@@ -144,8 +149,10 @@ function chooseTrump() {
 
 function playCard(card) {
     if ($("#action").text() === "discard") {
+        $("#action").text("wait");
         postData("/discard/", {code: gameCode, i_player: playerNum, card: card}, runUpdateFunction, func, func);
     } else if ($("#action").text() === "play card") {
+        $("#action").text("wait");
         postData("/play_card/", {code: gameCode, i_player: playerNum, card: card}, runUpdateFunction, func, func);
     }
 }
@@ -154,23 +161,33 @@ function resetGame() {
     postData("/reset/", {code: gameCode, i_player: playerNum}, runUpdateFunction, func, func);
 }
 
-function displayRoundEnd(tricks) {
+function displayRoundEnd(tricks, results) {
+    $("#resultsHighestBidder").text(results.highestBidder + 1);
+    $("#resultsHighestBid").text(results.bidAmount);
+    $("#tricksWon13").text(results.numOfTricks13);
+    $("#tricksWon24").text(results.numOfTricks24);
+    $("#points13").text(results.points13);
+    $("#points24").text(results.points24);
+
     $("#results1").empty();
     $("#results2").empty();
     $("#results3").empty();
     $("#results4").empty();
     $("#roundResults").show();
     for (let i = 0; i < tricks.length; i++) {
-        for (let j = 0; j < tricks[i].length; j++) {
-            let card = tricks[i][j];
+        for (let j = 0; j < tricks[i].cards.length; j++) {
+            let card = tricks[i].cards[j];
             let numStr = String(card.number);
             if (card.number == 0) {
                 numStr = "Rook"
             }
-            $("#results" + String(j+1)).append("<button id=" +
+            $("#results" + String(j+1)).append("<button id=result" +
                 card.color + String(card.number) +
                 " class='handCard " + card.color + "'>" +
                 numStr +"</button><br>");
         }
+        let winningCard = tricks[i].cards[tricks[i].winner];
+        $("#result" + winningCard.color + String(winningCard.number)).css('font-weight', 'bold');
+        $("#result" + winningCard.color + String(winningCard.number)).css('text-decoration', 'underline');
     }
 }
