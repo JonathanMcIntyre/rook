@@ -99,6 +99,14 @@ function updateState() {
                 $("#bidAmount").append(o);
             }
         }
+
+        for (let i = 0; i < 4; i++) {
+            if (i == data.playerTurn) {
+                $("#playerLabel" + String(i+1)).css('font-weight', 'bold');
+            } else {
+                $("#playerLabel" + String(i+1)).css('font-weight', 'normal');
+            }
+        }
         
         if (data.tricks) {
             displayRoundEnd(data.tricks);
