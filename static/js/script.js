@@ -130,6 +130,7 @@ function updateState() {
 function bid() {
     if ($("#action").text() === "bid") {
         let bidAmount = $("#bidAmount").val();
+        $("#action").text("wait");
         postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
     }
 }
@@ -137,12 +138,14 @@ function bid() {
 function passBid() {
     if ($("#action").text() === "bid") {
         let bidAmount = 0;
+        $("#action").text("wait");
         postData("/bid/", {code: gameCode, i_player: playerNum, bidAmount: bidAmount}, runUpdateFunction, func, func);
     }
 }
 
 function chooseTrump() {
     if ($("#action").text() === "choose trump" && $("#trumpSelect").val() !== "Select") {
+        $("#action").text("wait");
         postData("/select_trump/", {code: gameCode, color: $("#trumpSelect").val()}, runUpdateFunction, func, func);
     }
 }
