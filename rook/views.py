@@ -6,7 +6,7 @@ from django.conf import settings
 from rook.Game import Game
 
 GAME_MASTER_PASSWORD = "JonIsFabulous"
-games = {"rook": Game()}
+games = {"rook": Game(), "heninger": Game(), "voroney": Game(), "smigel": Game()}
 
 def index(request):
     template = loader.get_template("index.html")
@@ -19,7 +19,7 @@ def game(request):
     if request.GET["Code"] in games:
         template = loader.get_template("game.html")
         return HttpResponse(template.render(data, request))
-    
+
     template = loader.get_template("index.html")
     return HttpResponse(template.render(data, request))
 
@@ -35,7 +35,7 @@ def create_game(request):
             return JsonResponse({"Message": "Game created", "Games": list(games.keys())})
         else:
             return JsonResponse({"Message": "Game already exists", "Games": list(games.keys())})
-    
+
     return JsonResponse({"Message": "Incorrect Password"})
 
 @require_http_methods(["POST"])
@@ -49,7 +49,7 @@ def delete_game(request):
             return JsonResponse({"Message": "Game deleted", "Games": list(games.keys())})
         else:
             return JsonResponse({"Message": "Game does not exist", "Games": list(games.keys())})
-    
+
     return JsonResponse({"Message": "Incorrect Password"})
 
 @require_http_methods(["POST"])
